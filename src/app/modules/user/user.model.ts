@@ -79,8 +79,8 @@ userSchema.statics.isPasswordMatched = async function (
 };
 
 userSchema.statics.isJWTIssuedBeforePasswordChanged = function (
-  passwordChangedTimeStamp: Date,
-  jwtIssuedTimestamp: number,
+  passwordChangedTimeStamp: Date, // time
+  jwtIssuedTimestamp: number, // iat
 ) {
   const passwordChangedTime =
     new Date(passwordChangedTimeStamp).getTime() / 1000;

@@ -6,7 +6,7 @@ import {
 
 export const AcademicSemesterName: TAcademicSemesterName[] = [
   "Autumn",
-  "Summar",
+  "Summer",
   "Fall",
 ];
 
@@ -26,3 +26,5 @@ export const months: TMonths[] = [
   "November",
   "December",
 ];
+
+export const AcademicSemesterSearchableFields = ["name", "year"];

@@ -11,7 +11,7 @@ export default {
   NODE_ENV: process.env.NODE_ENV,
   Jwt_access_secret: process.env.JWT_ACCESS_SECRET,
   Jwt_refresh_secret: process.env.JWT_REFRESH_SECRET,
-  Jwt_access_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
+  Jwt_access_expires_in: process.env.JWT_ACCESS_EXPIRES_IN,
   Jwt_refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
   Reset_pass_ui_link: process.env.RESET_PASSWORD_UI_LINk,
   Cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

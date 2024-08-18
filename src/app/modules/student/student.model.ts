@@ -76,80 +76,101 @@ const localGuardian = new Schema<LocalGuardian>({
   },
 });
 
-const studentScema = new Schema<Student>({
-  id: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: [true, "user id is required"],
-    unique: true,
-  },
-  name: {
-    type: userNameSchema,
-    required: true,
-  },
-  gender: {
-    type: String,
-    enum: {
-      values: ["male", "female", "others"],
-      message: "{VALUE} is not valid",
+const studentScema = new Schema<Student>(
+  {
+    id: {
+      type: String,
+      required: true,
+      unique: true,
     },
-    required: true,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "user id is required"],
+      unique: true,
+    },
+    name: {
+      type: userNameSchema,
+      required: true,
+    },
+    gender: {
+      type: String,
+      enum: {
+        values: ["male", "female", "others"],
+        message: "{VALUE} is not valid",
+      },
+      required: true,
+    },
+    dateOfBirth: {
+      type: String,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    contactNo: {
+      type: String,
+      required: true,
+    },
+    emergencyContactNo: {
+      type: String,
+      required: true,
+    },
+    bloodGroup: {
+      type: String,
+      enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+    },
+    presentAddress: {
+      type: String,
+      required: true,
+    },
+    permanentAddress: {
+      type: String,
+      required: true,
+    },
+    guardian: {
+      type: guardianSchema,
+      required: true,
+    },
+    localGuardian: {
+      type: localGuardian,
+      required: true,
+    },
+    profileImg: {
+      type: String,
+    },
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      ref: "AcademicSemester",
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: "AcademicDepartment",
+    },
+    academicFaculty: {
+      type: Schema.Types.ObjectId,
+      ref: "AcademicFaculty",
+    },
   },
-  dateOfBirth: {
-    type: String,
+  {
+    toJSON: {
+      virtuals: true,
+    },
   },
-  email: {
-    type: String,
-    required: true,
-  },
-  contactNo: {
-    type: String,
-    required: true,
-  },
-  emergencyContactNo: {
-    type: String,
-    required: true,
-  },
-  bloogGroup: {
-    type: String,
-    enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-  },
-  presentAddress: {
-    type: String,
-    required: true,
-  },
-  permanentAddress: {
-    type: String,
-    required: true,
-  },
-  guardian: {
-    type: guardianSchema,
-    required: true,
-  },
-  localGuardian: {
-    type: localGuardian,
-    required: true,
-  },
-  profileImg: {
-    type: String,
-  },
-  admissionSemester: {
-    type: Schema.Types.ObjectId,
-    ref: "AcademicSemester",
-  },
-  isDeleted: {
-    type: Boolean,
-    default: false,
-  },
-  academicDepartment: {
-    type: Schema.Types.ObjectId,
-    ref: "AcademicDepartment",
-  },
+);
+
+studentScema.virtual("fullName").get(function () {
+  return (
+    this?.name?.firstName +
+    " " +
+    this?.name?.middleName +
+    " " +
+    this?.name?.lastName
+  );
 });
 
 export const StudentModel = model<Student>("Student", studentScema);

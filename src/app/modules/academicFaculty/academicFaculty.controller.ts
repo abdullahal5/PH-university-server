@@ -11,18 +11,20 @@ const createAcademicFaculty = catchAsync(async (req, res) => {
   SendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "Course is Created Successfully",
+    message: "Academic faculty is Created Successfully",
     data: result,
   });
 });
 
 const getAllAcademicFaculty = catchAsync(async (req, res) => {
-  const result = await AcademicFacultyService.getAllSAcademicFacultyFromDB();
+  const result = await AcademicFacultyService.getAllSAcademicFacultyFromDB(
+    req.query,
+  );
 
   SendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "Course is fetched Successfully",
+    message: "Academic faculty is fetched Successfully",
     data: result,
   });
 });
@@ -35,7 +37,7 @@ const getSingleAcademicFaculty = catchAsync(async (req, res) => {
   SendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "Course is fetched Successfully",
+    message: "Academic faculty is fetched Successfully",
     data: result,
   });
 });
@@ -51,7 +53,7 @@ const updateAcademicFaculty = catchAsync(async (req, res) => {
   SendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "Course is fetched Successfully",
+    message: "Academic faculty is fetched Successfully",
     data: result,
   });
 });

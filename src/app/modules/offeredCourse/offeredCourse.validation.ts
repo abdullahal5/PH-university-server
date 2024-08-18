@@ -43,7 +43,6 @@ const createOfferedCourseValidationSchema = z.object({
     })
     .refine(
       (body) => {
-        console.log(body);
         const start = new Date(`1970-01-01T${body.startTime}:00`);
         const end = new Date(`1970-01-01T${body.endTime}:00`);
 

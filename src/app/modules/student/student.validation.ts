@@ -5,15 +5,15 @@ const userNameSchema = z.object({
     .string()
     .max(20, { message: "First Name cannot be more than 20 characters" })
 
-    .regex(/^[A-Z][a-z]*$/, {
-      message: "First Name must start with a capital letter",
-    })
+    // .regex(/^[A-Z][a-z]*$/, {
+    //   message: "First Name must start with a capital letter",
+    // })
     .trim(),
   middleName: z.string().optional(),
   lastName: z
     .string()
 
-    .regex(/^[a-zA-Z]+$/, { message: "Last Name must contain only alphabets" }),
+    // .regex(/^[a-zA-Z]+$/, { message: "Last Name must contain only alphabets" }),
 });
 
 const guardianSchema = z.object({
@@ -89,7 +89,7 @@ const updateStudentValidationSchema = z.object({
       email: z.string().email().optional(),
       contactNo: z.string().optional(),
       emergencyContactNo: z.string().optional(),
-      bloogGroup: z
+      bloodGroup: z
         .enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"])
         .optional(),
       presentAddress: z.string().optional(),

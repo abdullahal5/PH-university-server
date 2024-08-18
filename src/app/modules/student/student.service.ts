@@ -12,12 +12,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     StudentModel.find()
       .populate("user")
       .populate("admissionSemester")
-      .populate({
-        path: "academicDepartment",
-        populate: {
-          path: "academicFaculty",
-        },
-      }),
+      .populate("academicDepartment academicFaculty"),
     query,
   )
     .search(studentSearchableFields)
@@ -26,28 +21,39 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
 
+  const meta = await studentQuery.countTotal();
   const result = await studentQuery.modelQuery;
-  return result;
+
+  return {
+    meta,
+    result,
+  };
 };
 
 const getSingleStudentFromDB = async (id: string) => {
-  const result = await StudentModel.findOne({ id })
+  const result = await StudentModel.findOne({ _id: id })
     .populate("admissionSemester")
-    .populate({
-      path: "academicDepartment",
-      populate: {
-        path: "academicFaculty",
-      },
-    });
+    .populate("academicDepartment academicFaculty");
   return result;
 };
 
 const updateStudentFromDB = async (id: string, payload: Partial<Student>) => {
-  const { name, guardian, localGuardian, ...remainingSudentData } = payload;
+  const { name, guardian, localGuardian, ...remainingStudentData } = payload;
 
   const modifiedUpdatedData: Record<string, unknown> = {
-    ...remainingSudentData,
+    ...remainingStudentData,
   };
+
+  /*
+    guardain: {
+      fatherOccupation:"Teacher"
+    }
+
+    guardian.fatherOccupation = Teacher
+
+    name.firstName = 'Mezba'
+    name.lastName = 'Abedin'
+  */
 
   if (name && Object.keys(name).length) {
     for (const [key, value] of Object.entries(name)) {
@@ -67,21 +73,21 @@ const updateStudentFromDB = async (id: string, payload: Partial<Student>) => {
     }
   }
 
-  const result = await StudentModel.findOneAndUpdate(
-    { id },
-    modifiedUpdatedData,
-    { new: true, runValidators: true },
-  );
+  const result = await StudentModel.findByIdAndUpdate(id, modifiedUpdatedData, {
+    new: true,
+    runValidators: true,
+  });
   return result;
 };
 
 const deleteStudentFromDB = async (id: string) => {
   const session = await mongoose.startSession();
+
   try {
     session.startTransaction();
 
-    const deletedStudent = await StudentModel.findOneAndUpdate(
-      { id },
+    const deletedStudent = await StudentModel.findByIdAndUpdate(
+      id,
       { isDeleted: true },
       { new: true, session },
     );
@@ -90,8 +96,11 @@ const deleteStudentFromDB = async (id: string) => {
       throw new AppError(httpStatus.BAD_REQUEST, "Failed to delete student");
     }
 
-    const deletedUser = await User.findOneAndUpdate(
-      { id },
+    // get user _id from deletedStudent
+    const userId = deletedStudent.user;
+
+    const deletedUser = await User.findByIdAndUpdate(
+      userId,
       { isDeleted: true },
       { new: true, session },
     );
@@ -104,10 +113,10 @@ const deleteStudentFromDB = async (id: string) => {
     await session.endSession();
 
     return deletedStudent;
-  } catch (error) {
+  } catch (err) {
     await session.abortTransaction();
     await session.endSession();
-    throw new Error("failed to delete student");
+    throw new Error("Failed to delete student");
   }
 };
 

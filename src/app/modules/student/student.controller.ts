@@ -7,9 +7,9 @@ const getAllStudents = catchAsync(async (req, res) => {
   const result = await StudentServices.getAllStudentsFromDB(req.query);
 
   SendResponse(res, {
-    success: true,
     statusCode: httpStatus.OK,
-    message: "Student Created Successfully",
+    success: true,
+    message: "Student are retrieved succesfully",
     data: result,
   });
 });
@@ -21,7 +21,7 @@ const getSingleStudent = catchAsync(async (req, res) => {
   SendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "Student Created Successfully",
+    message: "Student retrieved Successfully",
     data: result,
   });
 });
@@ -48,7 +48,7 @@ const deleteStudent = catchAsync(async (req, res) => {
   SendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "Student Created Successfully",
+    message: "Student Deleted Successfully",
     data: result,
   });
 });

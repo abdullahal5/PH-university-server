@@ -61,7 +61,7 @@ const facultySchema = new Schema<TFaculty, TFacultyModel>(
       type: String,
       required: [true, "Emergency contact number is required"],
     },
-    bloogGroup: {
+    bloodGroup: {
       type: String,
       enum: {
         values: BloodGroup,
@@ -97,9 +97,9 @@ const facultySchema = new Schema<TFaculty, TFacultyModel>(
 facultySchema.virtual("fullName").get(function () {
   return (
     this?.name?.firstName +
-    "" +
+    " " +
     this?.name.middleName +
-    "" +
+    " " +
     this?.name?.lastName
   );
 });
