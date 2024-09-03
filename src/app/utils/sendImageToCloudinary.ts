@@ -9,6 +9,12 @@ cloudinary.config({
   api_secret: config.Cloudinary_api_secret,
 });
 
+console.log(
+  config.Cloudinary_cloud_name,
+  config.Cloudinary_api_key,
+  config.Cloudinary_api_secret,
+);
+
 export const sendImageToCloudinary = async (
   imageName: string,
   path: string,
